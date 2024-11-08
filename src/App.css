@@ -1,38 +1,180 @@
-.App {
-  text-align: center;
+/* Reset and base styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  text-decoration: none;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+body {
   min-height: 100vh;
+}
+.app-container {
+  width: 100%;
+  max-width: 40rem; /* Limits max width for larger screens */
+  height: auto;
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 14px 4px rgba(0, 0, 0, 0.75);
+  padding: 1rem;
+  text-align: center;
+  background-color: #f0f0f0;
+  transition: background-color 0.3s;
+}
+.header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 1rem;
+}
+.header h1 {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+.header .light-night-mode {
+  margin-right: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  outline: none;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+.header.header-night {
+  color: white;
+}
+.header.header-night .light-night-mode {
+  color: #ffffff;
+}
+.light-night-mode i {
+  font-size: 1.5rem;
+}
+.main-weather-container {
+  width: 100%;
+  padding: 2rem;
+}
+.card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 21px;
+  text-align: center;
+  width: 100%;
+  margin: 0.5rem 0;
+}
+.card.temp {
+  background-color: #ffcc00;
+}
+.card.details {
+  background-color: #4caf50;
+}
+.temperature {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #ff4500;
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  margin: 10px 0;
+}
+.night-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+.small-card{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  background-color: red;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.today-forecast{
+  display: flex;
+  overflow: auto;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+.today-forecast-card{
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 0.5rem;
+  min-width: 100px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.App-link {
-  color: #61dafb;
-}
+/* Media Queries for Responsiveness */
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Small devices (phones, 600px and below) */
+@media (max-width: 600px) {
+  body {
+    height: auto;
   }
-  to {
-    transform: rotate(360deg);
+  .app-container {
+    padding: 0.5rem;
+    width: 100%;
+    min-height: 100vh;
+  }
+  .header h1 {
+    font-size: 1.2rem;
+  }
+  .main-weather-container {
+    padding: 1rem;
+  }
+  .temperature {
+    font-size: 2.5em;
+  }
+  .card {
+    padding: 15px;
+  }
+  .temp, .details {
+    width: 100%;
+  }
+  .small-card{
+    margin-bottom: 0.5rem;
+  }
+}
+/* Medium devices (tablets, 600px to 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  body {
+    min-height: 100vh;
+  }
+  .app-container {
+    width: 90%;
+    margin:10% auto;
+  }
+  .header h1 {
+    font-size: 1.4rem;
+  }
+  .main-weather-container {
+    padding: 0.5rem;
+  }
+  .temperature {
+    font-size: 3em;
+  }
+  .small-card{
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Large devices (desktops, 1024px and up) */
+@media (min-width: 1025px) {
+  body{
+    padding-block: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .app-container {
+    width: 100vw;
+    max-width: auto;
+    padding: 2rem;
+  }
+  .main-weather-container {
+    padding: 1rem;
+  }
+  .temperature {
+    font-size: 2em;
   }
 }
