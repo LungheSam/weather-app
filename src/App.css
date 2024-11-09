@@ -21,37 +21,18 @@ body {
   background-color: #f0f0f0;
   transition: background-color 0.3s;
 }
-.header {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  padding-inline: 1rem;
-}
-.header h1 {
-  font-weight: 600;
-  font-size: 1.5rem;
-}
-.header .light-night-mode {
-  margin-right: 0.5rem;
-  padding: 0.3rem 0.6rem;
-  outline: none;
-  border: none;
-  border-radius: 0.3rem;
-  cursor: pointer;
-}
-.header.header-night {
-  color: white;
-}
-.header.header-night .light-night-mode {
-  color: #ffffff;
-}
+
+
 .light-night-mode i {
   font-size: 1.5rem;
 }
 .main-weather-container {
   width: 100%;
   padding: 2rem;
+}
+.card.weather-card-night{
+  background-color: #333;
+  color: #ffffff;
 }
 .card {
   background-color: #ffffff;
@@ -63,17 +44,26 @@ body {
   margin: 0.5rem 0;
 }
 .card.temp {
-  background-color: #ffcc00;
+  background-color: #ffd597;
+}
+.card.temp.temp-night {
+  background-color: #bb6700;
 }
 .card.details {
-  background-color: #4caf50;
+  background-color: #f6f6f6;
+}
+.card.details.details-night {
+  background-color: #121212;
 }
 .temperature {
   font-size: 2.5em;
   font-weight: bold;
-  color: #ff4500;
+  color: #000;
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   margin: 10px 0;
+}
+.temperature.temperature-night{
+  color: #fff;
 }
 .night-mode {
   background-color: #121212;
@@ -83,10 +73,16 @@ body {
   display: flex;
   width: 100%;
   justify-content: center;
-  background-color: red;
+  background-color:#ffd597;
   padding: 1rem;
   border-radius: 0.5rem;
+  font-weight: 600;
+  margin-bottom:0.5rem;
 }
+.card.details.details-night .small-card{
+  background-color:#bb6700;
+}
+
 .today-forecast{
   display: flex;
   overflow: auto;
@@ -103,7 +99,48 @@ body {
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
+.today-forecast-card:nth-child(even){
+  background-color: #f0f0f0;
+}
+.today-forecast-card:nth-child(odd){
+  background-color: #ffd597;
+}
+.today-forecast-card.today-forecast-card-night:nth-child(even){
+  background-color: #121212;
+}
+.today-forecast-card.today-forecast-card-night:nth-child(odd){
+  background-color: #bb6700;
+}
+.part-title{
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+}
+.city-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0;
+  width: 100%;
+  
+  
+}
+.city-input i{
+  font-size: 1.5rem;
+}
+.city-input input {
+  padding: 10px;
+  font-size: 1em;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  margin-right: 8px;
+  outline: none;
+  border:none;
+  background:transparent;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+}
 /* Media Queries for Responsiveness */
 
 /* Small devices (phones, 600px and below) */
@@ -132,7 +169,7 @@ body {
     width: 100%;
   }
   .small-card{
-    margin-bottom: 0.5rem;
+    margin-bottom:0.5rem;
   }
 }
 /* Medium devices (tablets, 600px to 1024px) */

@@ -1,5 +1,8 @@
 import './App.css';
 import Header from './components/Header';
+import Today from './components/Today';
+import DailyForecast from './components/DailyForecast';
+import CurrentWeather from './components/CurrentWeather';
 import React, { useEffect, useState } from 'react';
 
 function App() {
@@ -8,16 +11,30 @@ function App() {
 
   // Replace 'YOUR_API_KEY' with your actual OpenWeatherMap API key
   const API_KEY = 'e42271f29595c6ba99fbbe289cb312b9';
-  const CITY = 'London'; // Change to your preferred city
+  const [CITY,setCITY] = useState('London'); // Change to your preferred city
+  const [inputCity,setInputCity] = useState(''); // Change to your preferred
+  const [noCity,setNoCity] = useState(null); // Change to your preferred
+  const [iconUrl,setIconUrl] = useState('')
 
   useEffect(() => {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${CITY}&appid=${API_KEY}&units=metric`)
       .then(response => response.json())
-      .then(data => {setWeatherData(data);console.log(data)})
+      .then(data => {
+        if(Number(data.cod)!==404){
+        setWeatherData(data);
+        console.log(data);
+        }
+        else{
+          setWeatherData(null);
+        }
+        
+      })
       .catch(err => console.error(err));
+    setIconUrl(weatherData? `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`: '')
+      
   }, [CITY, API_KEY]);
 
-  const iconUrl = weatherData? `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`: '';
+  // const iconUrl = weatherData? `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`: '';
   const [todayForecast, setTodayForecast] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -95,98 +112,35 @@ function App() {
     fetchDailyWeatherData();
   }, [CITY]);
 
+  const handleChange = (event) => {
+    setInputCity(event.target.value);
+  };
+  const handleSearchCity=(event) => {
+    event.preventDefault();
+    if (inputCity.trim()) {
+      setCITY(inputCity.trim());
+    }
+  };
+  let isWeatherThere=!(weatherData===null);
+  
   return (
     <div className={`app-container ${nightMode ? 'night-mode' : ''}`}>
       <Header nightMode={nightMode} setNightMode={setNightMode} />
-      <div className="main-weather-container">
-          <div className="weather-card card rounded-box grid place-items-center">
-            <h2 className='weather-city'>{CITY}</h2>
-            <div className="flex w-full flex-col lg:flex-row gap-1">
-              <div className="card temp grid flex-grow "> 
-                <h4>Now</h4>
-                <h4>{weatherData ? weatherData.weather[0].description : 'Loading...'}</h4>
-                <div className='weather-icon' style={{margin:'0 auto'}}>
-                  {iconUrl && <img src={iconUrl} alt="Weather Icon" />}
-                </div>
-                <h3 className='temperature'>{weatherData ? `${weatherData.main.temp} °C` : 'Loading...'}</h3>
-                <h4 className='feels-like'>Feels Like:<span> {weatherData ? `${weatherData.main.feels_like} °C` : 'Loading...'}</span></h4>
-              </div>
-              <div className="card details grid  flex-grow place-items-center">
-                <div className='small-card humidity-container'>
-                  <h4><i className='bx bxs-droplet'></i> Humidity </h4>
-                  <h3 style={{marginLeft:"0.2rem"}}> {weatherData? `${weatherData.main.humidity}%` : 'Loading...'}</h3>
-                </div>
-                <div className='small-card wind-container'>
-                  <h4><i className='bx bx-wind' ></i> Wind </h4>
-                  <h3 style={{marginLeft:"0.2rem"}}> {weatherData? `${weatherData.wind.speed} km/h` : 'Loading...'}</h3>
-                </div>
-                <div className='small-card pressure-container'>
-                  <h4><i className='bx bxs-tachometer' ></i> Pressure </h4>
-                  <h3 style={{marginLeft:"0.2rem"}}> {weatherData? `${weatherData.main.pressure} hPa` : 'Loading...'}</h3>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="weather-card card 3-hours-daily-forecast"> 
-                <h1>Today</h1>
-                <div className='today-forecast'>
-                  {todayForecast.map((weather, index) => {
-                    const temp = weather.main.temp;
-                    const iconCode = weather.weather[0].icon;
-                    const hour = new Date(weather.dt * 1000).toLocaleTimeString('en-US', {
-                      hour: 'numeric',
-                      hour12: true
-                    });
-
-                    return (
-                      <div key={index} className='today-forecast-card'>
-                        <p style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{temp}°C</p>
-                        <img
-                          src={`http://openweathermap.org/img/wn/${iconCode}@2x.png`}
-                          alt={weather.weather[0].description}
-                          style={{ width: '50px', height: '50px' }}
-                        />
-                        <p style={{ fontSize: '0.9rem' }}>{hour}</p>
-                      </div>
-                    );
-                  })}
-                </div>
-          </div>
-          <div style={{ width: '100%', marginTop: '1rem' }}>
-            <h1>Daily Forecast</h1>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th style={{ textAlign: 'left', padding: '10px' }}>Date</th>
-                  <th style={{ textAlign: 'center', padding: '10px' }}>Weather</th>
-                  <th style={{ textAlign: 'right', padding: '10px' }}>Temperature</th>
-                </tr>
-              </thead>
-              <tbody>
-                {dailyForecast.map((weather, index) => {
-                  const date = new Date(weather.dt * 1000);
-                  const day = date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
-                  const temp = weather.main.temp;
-                  const iconCode = weather.weather[0].icon;
-
-                  return (
-                    <tr key={index} style={{ border: 'none' }} className='forecast-row'>
-                      <td style={{ padding: '10px',textAlign:'left' }}>{day}</td>
-                      <td style={{ textAlign: 'center' }}>
-                        <img
-                          src={`http://openweathermap.org/img/wn/${iconCode}@2x.png`}
-                          alt={weather.weather[0].description}
-                          style={{ width: '40px', height: '40px', margin:'0 auto' }}
-                        />
-                      </td>
-                      <td style={{ textAlign: 'right', padding: '10px' }}>{temp}°C</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-      </div>
+      <form className='city-input'>
+        <i className='bx bxs-map' ></i>
+        <input type="text" placeholder='Search here ...' value={inputCity} onChange={handleChange} />
+        <button type='submit' onClick={handleSearchCity}><i className='bx bx-search-alt'></i></button>
+      </form>
+      {error && <p className="error-message">City not found. Please try again.</p>}
+      {isWeatherThere ?(
+        <div className="main-weather-container">
+            <CurrentWeather CITY={CITY} weatherData={weatherData} iconUrl={iconUrl} nightMode={nightMode} />  
+            <Today todayForecast={todayForecast} nightMode={nightMode}/>
+            <DailyForecast dailyForecast={dailyForecast} nightMode={nightMode} />
+        </div>):(
+           <p>No data available for the specified city.</p>
+        )
+      }
     </div>
         );
 }
