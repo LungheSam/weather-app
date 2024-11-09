@@ -13,7 +13,6 @@ function App() {
   const API_KEY = 'e42271f29595c6ba99fbbe289cb312b9';
   const [CITY,setCITY] = useState('London'); // Change to your preferred city
   const [inputCity,setInputCity] = useState(''); // Change to your preferred
-  const [noCity,setNoCity] = useState(null); // Change to your preferred
   const [iconUrl,setIconUrl] = useState('')
 
   useEffect(() => {
@@ -65,9 +64,7 @@ function App() {
         setTodayForecast(threeHoursData);
       } catch (err) {
         setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     fetchTodayWeatherData();
@@ -104,9 +101,7 @@ function App() {
         setDailyForecast(dailyData);
       } catch (err) {
         setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     fetchDailyWeatherData();
